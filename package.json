@@ -1,24 +1,31 @@
 {
-  "name": "vscode-duplicate",
-  "displayName": "vscode-duplicate",
-  "description": "Duplicate file or directory",
-  "version": "0.0.1",
+  "name": "trandaison-vscode-duplicate",
+  "displayName": "@trandaison/vscode-duplicate",
+  "description": "A vscode extension to duplicate files and folders",
+  "publisher": "trandaison",
+  "license": "MIT",
+  "version": "0.0.2",
   "engines": {
-    "vscode": "^1.83.0"
+    "vscode": "^1.83.0",
+    "node": "^18.16.0"
   },
+  "homepage": "https://github.com/trandaison/vscode-duplicate",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trandaison/vscode-duplicate"
+  },
+  "keywords": [
+    "duplicate",
+    "copy",
+    "file",
+    "directory"
+  ],
   "categories": [
     "Other"
   ],
+  "icon": "icon.png",
   "activationEvents": [],
   "main": "./dist/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "vscode-duplicate.helloWorld",
-        "title": "Hello World"
-      }
-    ]
-  },
   "scripts": {
     "vscode:prepublish": "pnpm run package",
     "compile": "webpack",
@@ -28,21 +35,89 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js",
+    "publish": "pnpm vsce publish --no-dependencies"
   },
   "devDependencies": {
-    "@types/vscode": "^1.83.0",
+    "@types/fs-extra": "^11.0.3",
     "@types/mocha": "^10.0.2",
     "@types/node": "18.x",
+    "@types/vscode": "^1.83.0",
     "@typescript-eslint/eslint-plugin": "^6.7.3",
     "@typescript-eslint/parser": "^6.7.3",
+    "@vscode/test-electron": "^2.3.4",
     "eslint": "^8.50.0",
     "glob": "^10.3.3",
     "mocha": "^10.2.0",
-    "typescript": "^5.2.2",
     "ts-loader": "^9.4.4",
+    "typescript": "^5.2.2",
     "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4",
-    "@vscode/test-electron": "^2.3.4"
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "fs-extra": "^11.1.1"
+  },
+  "configuration": {
+    "type": "object",
+    "title": "Duplicate Action Configuration",
+    "properties": {
+      "duplicate.autoOpen": {
+        "type": "boolean",
+        "default": true,
+        "description": "Automatically open newly copied files"
+      },
+      "duplicate.keepFileExt": {
+        "type": "boolean",
+        "default": true,
+        "description": "Keep original extension if it not specified"
+      },
+      "duplicate.suffix": {
+        "type": "string",
+        "default": " copy",
+        "description": "Suffix for copied files"
+      }
+    }
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "duplicate.execute",
+        "title": "Duplicate"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "duplicate.execute",
+          "group": "7_modification"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "duplicate.execute"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "Duplicate Action Configuration",
+      "properties": {
+        "duplicate.autoOpen": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically open newly copied files"
+        },
+        "duplicate.keepFileExt": {
+          "type": "boolean",
+          "default": true,
+          "description": "Keep original extension if it not specified"
+        },
+        "duplicate.suffix": {
+          "type": "string",
+          "default": " copy",
+          "description": "Suffix for copied files"
+        }
+      }
+    }
   }
 }
