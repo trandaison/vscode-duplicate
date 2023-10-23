@@ -6,9 +6,9 @@ import { PluginSettings } from './types';
 export function activate(context: vscode.ExtensionContext) {
   console.log('vscode-duplicate is now active!');
 
-  let disposable = vscode.commands.registerCommand(
+  let disposableDuplicate = vscode.commands.registerCommand(
     'duplicate.execute',
-    (uri: vscode.TextDocument | vscode.Uri) => {
+    (uri) => {
       const settings = vscode.workspace
         .getConfiguration()
         .get('duplicate') as PluginSettings;
@@ -27,7 +27,45 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
-  context.subscriptions.push(disposable);
+  let disposableMove = vscode.commands.registerCommand(
+    'duplicate.move',
+    async (uri) => {
+      const folderUri = await vscode.window.showSaveDialog({
+        defaultUri: vscode.Uri.file(uri.fsPath),
+        saveLabel: 'Move to this folder',
+      });
+      if (!folderUri) {
+        return;
+      }
+      try {
+        await vscode.workspace.fs.rename(uri, folderUri, { overwrite: true });
+      } catch (error: any) {
+        vscode.window.showErrorMessage(error.message);
+      }
+    }
+  );
+
+  let disposableCopy = vscode.commands.registerCommand(
+    'duplicate.copy',
+    async (uri) => {
+      const folderUri = await vscode.window.showSaveDialog({
+        defaultUri: vscode.Uri.file(uri.fsPath),
+        saveLabel: 'Copy to this folder',
+      });
+      if (!folderUri) {
+        return;
+      }
+      try {
+        await vscode.workspace.fs.copy(uri, folderUri, { overwrite: true });
+      } catch (error: any) {
+        vscode.window.showErrorMessage(error.message);
+      }
+    }
+  );
+
+  context.subscriptions.push(disposableDuplicate);
+  context.subscriptions.push(disposableMove);
+  context.subscriptions.push(disposableCopy);
 }
 
 export function deactivate() {}
