@@ -4,7 +4,7 @@
   "description": "A vscode extension to duplicate files and folders",
   "publisher": "trandaison",
   "license": "MIT",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.83.0",
     "node": "^18.16.0"
@@ -83,6 +83,14 @@
       {
         "command": "duplicate.execute",
         "title": "Duplicate"
+      },
+      {
+        "command": "duplicate.move",
+        "title": "Move to..."
+      },
+      {
+        "command": "duplicate.copy",
+        "title": "Copy to..."
       }
     ],
     "menus": {
@@ -90,6 +98,14 @@
         {
           "command": "duplicate.execute",
           "group": "7_modification"
+        },
+        {
+          "command": "duplicate.move",
+          "group": "5_cutcopypaste@40"
+        },
+        {
+          "command": "duplicate.copy",
+          "group": "5_cutcopypaste@41"
         }
       ],
       "editor/title/context": [
