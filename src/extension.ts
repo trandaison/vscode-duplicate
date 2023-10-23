@@ -69,7 +69,7 @@ async function duplicate(uri: vscode.Uri, settings: PluginSettings) {
         prompt: 'Enter new folder name',
         validateInput: async (value) => {
           if (value === '') {
-            return "Folder name cannot be empty (Press 'Esccape' to cancel)";
+            return "Folder name cannot be empty (Press 'Escape' to cancel)";
           }
           const dirExists = await exists(value, dir, false);
           if (dirExists) {
